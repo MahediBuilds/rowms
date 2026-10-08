@@ -1,0 +1,34 @@
+# Local / pilot deployment:  docker compose up --build
+# Then open http://localhost:8000  (and point the field app at http://<this-computer-ip>:8000)
+services:
+  db:
+    image: postgres:16-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: rowms
+      POSTGRES_USER: rowms
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-rowms-change-me}
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U rowms"]
+      interval: 5s
+      retries: 10
+
+  app:
+    build: .
+    restart: unless-stopped
+    depends_on:
+      db:
+        condition: service_healthy
+    env_file: .env
+    environment:
+      DATABASE_URL: postgres://rowms:${POSTGRES_PASSWORD:-rowms-change-me}@db:5432/rowms
+    ports:
+      - "8000:8000"
+    volumes:
+      - media:/data/media
+
+volumes:
+  pgdata:
+  media:

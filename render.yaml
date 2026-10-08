@@ -1,0 +1,31 @@
+# Render Blueprint: one Docker web service (web admin + API) and a Postgres database.
+# Deploy: Render dashboard -> New -> Blueprint -> pick this repo.
+# Free-tier caveats: the service sleeps when idle, uploaded files (disk) are lost on redeploy/restart,
+# and the free database expires after 30 days. Fine for a prototype demo.
+services:
+  - type: web
+    name: rowms
+    runtime: docker
+    plan: free
+    healthCheckPath: /
+    envVars:
+      - key: PORT
+        value: "8000"
+      - key: SECRET_KEY
+        generateValue: true
+      - key: DATABASE_URL
+        fromDatabase:
+          name: rowms-db
+          property: connectionString
+      - key: ALLOWED_HOSTS
+        value: "*"
+      - key: SECURE_COOKIES
+        value: "true"
+      - key: SEED_DEMO
+        value: "true"
+
+databases:
+  - name: rowms-db
+    plan: free
+    databaseName: rowms
+    user: rowms

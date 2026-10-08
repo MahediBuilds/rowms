@@ -1,0 +1,16 @@
+.env
+__pycache__/
+*.pyc
+backend/.venv/
+backend/db.sqlite3
+backend/media/
+backend/staticfiles/
+web/node_modules/
+web/dist/
+mobile/node_modules/
+mobile/.expo/
+mobile/.bundle-check/
+mobile/dist/
+mobile/android/
+mobile/ios/
+.DS_Store
