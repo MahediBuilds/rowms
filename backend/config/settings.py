@@ -126,6 +126,10 @@ REST_FRAMEWORK = {
 CORS_ALLOW_ALL_ORIGINS = env_bool("CORS_ALLOW_ALL_ORIGINS", DEBUG)
 CORS_ALLOWED_ORIGINS = [o.strip() for o in os.environ.get("CORS_ALLOWED_ORIGINS", "").split(",") if o.strip()]
 
+# Django's default ("same-origin") sends no Referer to other sites, and OpenStreetMap's tile servers
+# block tile requests without one. This sends only the site origin cross-origin, never the full path.
+SECURE_REFERRER_POLICY = "strict-origin-when-cross-origin"
+
 if not DEBUG:
     SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
     SESSION_COOKIE_SECURE = env_bool("SECURE_COOKIES", True)

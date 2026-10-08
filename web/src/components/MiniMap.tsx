@@ -1,6 +1,6 @@
 import { CircleMarker, GeoJSON, MapContainer, TileLayer } from "react-leaflet";
 
-export const TILE_URL = "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png";
+export const TILE_URL = "https://tile.openstreetmap.org/{z}/{x}/{y}.png";
 export const TILE_ATTRIB = '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors';
 
 export function MiniMap({ lat, lng, polygon, height = 200 }: { lat: number; lng: number; polygon?: any; height?: number }) {
